@@ -2,7 +2,6 @@
 #include <istream>
 #include <memory>
 #include <streambuf>
-#include "qmatrix.cc"
 #include "cbits.h"
 #include "fasttext.h"
 #include "real.h"
@@ -13,6 +12,7 @@
 #include "matrix.cc"
 #include "model.cc"
 #include "productquantizer.cc"
+#include "qmatrix.cc"
 #include "utils.cc"
 #include "vector.cc"
 
