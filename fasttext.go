@@ -44,6 +44,24 @@ func (handle *Model) Close() error {
 	return nil
 }
 
+// Performs model nearest neighbour search
+func (handle *Model) NN(query string) (Neighbors, error) {
+	cquery := C.CString(query)
+	defer C.free(unsafe.Pointer(cquery))
+
+	r := C.Analogy(handle.handle, cquery)
+	defer C.free(unsafe.Pointer(r))
+	js := C.GoString(r)
+
+	neighbours := []Neighbor{}
+	err := json.Unmarshal([]byte(js), &neighbours)
+	if err != nil {
+		return nil, err
+	}
+
+	return neighbours, nil
+}
+
 // Performs model prediction
 func (handle *Model) Predict(query string) (Predictions, error) {
 	cquery := C.CString(query)

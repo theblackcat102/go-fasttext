@@ -13,7 +13,6 @@
 #include "matrix.cc"
 #include "model.cc"
 #include "productquantizer.cc"
-#include "qmatrix.cc"
 #include "utils.cc"
 #include "vector.cc"
 
@@ -78,6 +77,18 @@ char *Analogy(FastTextHandle handle, char *query) {
   auto model = bit_cast<fasttext::FastText *>(handle);
 
   model->analogies(10);
+
+  size_t ii = 0;
+  auto res = json::array();
+
+  return strdup(res.dump().c_str());
+}
+
+
+char *Neighbor(FastTextHandle handle, char *query, int32_t k) {
+  auto model = bit_cast<fasttext::FastText *>(handle);
+
+  model->getNN(query, k);
 
   size_t ii = 0;
   auto res = json::array();

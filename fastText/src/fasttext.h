@@ -40,6 +40,7 @@ class FastText {
 
   std::shared_ptr<QMatrix> qinput_;
   std::shared_ptr<QMatrix> qoutput_;
+  std::unique_ptr<Matrix> wordVectors_;
 
   std::shared_ptr<Model> model_;
 
@@ -76,6 +77,7 @@ class FastText {
   std::shared_ptr<const Matrix> getInputMatrix() const;
   std::shared_ptr<const Matrix> getOutputMatrix() const;
   void saveVectors();
+  void lazyComputeWordVectors();
   void saveModel(const std::string);
   void saveOutput();
   void saveModel();
@@ -108,6 +110,9 @@ class FastText {
       int32_t,
       const std::set<std::string>&,
       std::vector<std::pair<real, std::string>>& results);
+  void getNN(
+        const std::string&,
+        int32_t);
   void analogies(int32_t);
   void trainThread(int32_t);
   void train(const Args);

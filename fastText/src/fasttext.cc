@@ -25,7 +25,7 @@ namespace fasttext {
 constexpr int32_t FASTTEXT_VERSION = 12; /* Version 1b */
 constexpr int32_t FASTTEXT_FILEFORMAT_MAGIC_INT32 = 793712314;
 
-FastText::FastText() : quant_(false) {}
+FastText::FastText() : quant_(false), wordVectors_(nullptr) {}
 
 void FastText::addInputVector(Vector& vec, int32_t ind) const {
   if (quant_) {
@@ -472,6 +472,31 @@ void FastText::getSentenceVector(
     }
   }
 }
+
+void FastText::lazyComputeWordVectors() {
+  if (!wordVectors_) {
+    wordVectors_ = std::unique_ptr<Matrix>(
+        new Matrix(dict_->nwords(), args_->dim));
+    precomputeWordVectors(*wordVectors_);
+  }
+}
+
+void FastText::getNN(
+    const std::string& word,
+    int32_t k) {
+  std::vector<std::pair<real, std::string>> results;
+  Vector query(args_->dim);
+  getWordVector(query, word);
+  lazyComputeWordVectors();
+  assert(wordVectors_);
+  findNN(*wordVectors_, query, k, {word}, results);
+  for (auto& pair : results) {
+    std::cout << pair.second << " " << pair.first << std::endl;
+  }
+}
+
+
+
 
 void FastText::ngramVectors(std::string word) {
   std::vector<int32_t> ngrams;
