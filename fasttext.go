@@ -45,11 +45,11 @@ func (handle *Model) Close() error {
 }
 
 // Performs model nearest neighbour search
-func (handle *Model) Neighbor(query string) (Neighbors, error) {
+func (handle *Model) Neighbor(query string, k int32) (Neighbors, error) {
 	cquery := C.CString(query)
 	defer C.free(unsafe.Pointer(cquery))
-
-	r := C.Neighbor(handle.handle, cquery)
+	ck := C.int(k)
+	r := C.Neighbor(handle.handle, cquery, ck)
 	defer C.free(unsafe.Pointer(r))
 	js := C.GoString(r)
 

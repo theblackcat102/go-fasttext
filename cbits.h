@@ -11,7 +11,7 @@ void DeleteHandle(FastTextHandle handle);
 char *Predict(FastTextHandle handle, char *query);
 char *Analogy(FastTextHandle handle, char *query);
 char *Wordvec(FastTextHandle handle, char *query);
-char *Neighbor(FastTextHandle handle, char *query);
+char *Neighbor(FastTextHandle handle, char *query, int32_t k);
 
 #ifdef __cplusplus
 }
