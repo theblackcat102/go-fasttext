@@ -2,7 +2,7 @@
 #include <istream>
 #include <memory>
 #include <streambuf>
-
+#include "qmatrix.cc"
 #include "cbits.h"
 #include "fasttext.h"
 #include "real.h"
