@@ -49,7 +49,7 @@ func (handle *Model) NN(query string) (Neighbors, error) {
 	cquery := C.CString(query)
 	defer C.free(unsafe.Pointer(cquery))
 
-	r := C.Neighbor(handle.handle, cquery)
+	r := C.NN(handle.handle, cquery)
 	defer C.free(unsafe.Pointer(r))
 	js := C.GoString(r)
 
