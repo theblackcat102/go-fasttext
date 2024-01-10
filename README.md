@@ -13,7 +13,7 @@ import (
 
 func main() {
     // Replace with the path to your .bin model file
-    modelPath := "../event_test.bin"
+    modelPath := "<model path>"
     model := fasttext.Open(modelPath)
     defer model.Close()
 
