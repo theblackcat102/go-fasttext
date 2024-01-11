@@ -86,11 +86,20 @@ func (handle *Model) Predict(query string) (Predictions, error) {
 	return predictions, nil
 }
 
-func (handle *Model) Analogy(query string) (Analogs, error) {
-	cquery := C.CString(query)
-	defer C.free(unsafe.Pointer(cquery))
+func (handle *Model) Analogy(A string, B string, C string, k int32) (Analogs, error) {
+	// A + B - C
+	cA := C.CString(A)
+	defer C.free(unsafe.Pointer(cA))
 
-	r := C.Analogy(handle.handle, cquery)
+	cB := C.CString(B)
+	defer C.free(unsafe.Pointer(cB))
+
+	cC := C.CString(C)
+	defer C.free(unsafe.Pointer(cC))
+
+	ck := C.int(k)
+
+	r := C.Analogy(handle.handle, cA, cB, cC, ck)
 	defer C.free(unsafe.Pointer(r))
 	js := C.GoString(r)
 
