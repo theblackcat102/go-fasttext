@@ -94,11 +94,11 @@ char *Neighbor(FastTextHandle handle, char *query, int32_t k) {
   size_t ii = 0;
   auto res = json::array();
   for (const auto it : queries) {
-    float p = std::exp(it.first);
+    float p = it.first * 1.0;
     res.push_back({
         {"index", ii++},
         {"probability", p},
-        {"word", it.second},
+        {"name", it.second},
     });
   }
 
