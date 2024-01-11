@@ -557,36 +557,32 @@ void FastText::findNN(
   }
 }
 
-void FastText::analogies(int32_t k) {
+void FastText::analogies(const std::string &A,
+  const std::string &B,
+  const std::string &C,
+  int32_t k,
+  std::vector<std::pair<real, std::string>>& results) {
   std::string word;
-  Vector buffer(args_->dim), query(args_->dim);
-  Matrix wordVectors(dict_->nwords(), args_->dim);
-  precomputeWordVectors(wordVectors);
   std::set<std::string> banSet;
-  std::cout << "Query triplet (A - B + C)? ";
-  std::vector<std::pair<real, std::string>> results;
-  while (true) {
-    banSet.clear();
-    query.zero();
-    std::cin >> word;
-    banSet.insert(word);
-    getWordVector(buffer, word);
-    query.addVector(buffer, 1.0);
-    std::cin >> word;
-    banSet.insert(word);
-    getWordVector(buffer, word);
-    query.addVector(buffer, -1.0);
-    std::cin >> word;
-    banSet.insert(word);
-    getWordVector(buffer, word);
-    query.addVector(buffer, 1.0);
+  Vector buffer(args_->dim), query(args_->dim);
+  banSet.clear();
+  query.zero();
 
-    findNN(wordVectors, query, k, banSet, results);
-    for (auto& pair : results) {
-      std::cout << pair.second << " " << pair.first << std::endl;
-    }
-    std::cout << "Query triplet (A - B + C)? ";
-  }
+  lazyComputeWordVectors();
+  assert(wordVectors_);
+  banSet.insert(A);
+  getWordVector(buffer, A);
+  query.addVector(buffer, 1.0);
+
+  banSet.insert(B);
+  getWordVector(buffer, B);
+  query.addVector(buffer, -1.0);
+
+  banSet.insert(C);
+  getWordVector(buffer, C);
+  query.addVector(buffer, 1.0);
+
+  findNN(*wordVectors_, query, k, banSet, results);
 }
 
 void FastText::trainThread(int32_t threadId) {

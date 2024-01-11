@@ -114,7 +114,12 @@ class FastText {
         const std::string&,
         int32_t,
         std::vector<std::pair<real, std::string>>&);
-  void analogies(int32_t);
+  void analogies(
+        const std::string&,
+        const std::string&,
+        const std::string&,
+        int32_t,
+        std::vector<std::pair<real, std::string>>&);
   void trainThread(int32_t);
   void train(const Args);
 

@@ -73,13 +73,25 @@ char *Predict(FastTextHandle handle, char *query) {
   return strdup(res.dump().c_str());
 }
 
-char *Analogy(FastTextHandle handle, char *query) {
+char *Analogy(FastTextHandle handle, char *A, char *B, char *C, int32_t k) {
   auto model = bit_cast<fasttext::FastText *>(handle);
+  std::vector<std::pair<fasttext::real, std::string>> queries;
+  std::string aStr(A);
+  std::string bStr(B);
+  std::string cStr(C);
 
-  model->analogies(10);
+  model->analogies(aStr, bStr, cStr, 10, queries);
 
   size_t ii = 0;
   auto res = json::array();
+  for (const auto it : queries) {
+    float p = it.first * 1.0;
+    res.push_back({
+        {"index", ii++},
+        {"probability", p},
+        {"name", it.second},
+    });
+  }
 
   return strdup(res.dump().c_str());
 }
@@ -88,8 +100,8 @@ char *Analogy(FastTextHandle handle, char *query) {
 char *Neighbor(FastTextHandle handle, char *query, int32_t k) {
   auto model = bit_cast<fasttext::FastText *>(handle);
   std::vector<std::pair<fasttext::real, std::string>> queries;
-
-  model->getNN(query, k, queries);
+  std::string queryStr(query);
+  model->getNN(queryStr, k, queries);
 
   size_t ii = 0;
   auto res = json::array();
