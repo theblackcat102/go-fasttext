@@ -87,11 +87,20 @@ char *Analogy(FastTextHandle handle, char *query) {
 
 char *Neighbor(FastTextHandle handle, char *query, int32_t k) {
   auto model = bit_cast<fasttext::FastText *>(handle);
+  std::vector<std::pair<fasttext::real, std::string>> queries;
 
-  model->getNN(query, k);
+  model->getNN(query, k, queries);
 
   size_t ii = 0;
   auto res = json::array();
+  for (const auto it : queries) {
+    float p = std::exp(it.first);
+    res.push_back({
+        {"index", ii++},
+        {"probability", p},
+        {"word", it.second},
+    });
+  }
 
   return strdup(res.dump().c_str());
 }

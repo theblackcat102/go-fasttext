@@ -483,16 +483,15 @@ void FastText::lazyComputeWordVectors() {
 
 void FastText::getNN(
     const std::string& word,
-    int32_t k) {
-  std::vector<std::pair<real, std::string>> results;
+    int32_t k,
+    std::vector<std::pair<real,std::string>>& retrieval
+  ) {
   Vector query(args_->dim);
   getWordVector(query, word);
   lazyComputeWordVectors();
   assert(wordVectors_);
-  findNN(*wordVectors_, query, k, {word}, results);
-  for (auto& pair : results) {
-    std::cout << pair.second << " " << pair.first << std::endl;
-  }
+  // return value via reference
+  findNN(*wordVectors_, query, k, {word}, retrieval);
 }
 
 
