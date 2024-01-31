@@ -557,6 +557,15 @@ void FastText::findNN(
   }
 }
 
+void FastText::calculateSimilarity(
+  std::string a,
+  std::string b,
+  float &score
+) {
+    Vector vec(args_->dim);
+
+}
+
 void FastText::analogies(const std::string &A,
   const std::string &B,
   const std::string &C,
