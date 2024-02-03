@@ -564,14 +564,11 @@ void FastText::calculateVecSimilarity(
 ) {
   Vector vecA(args_->dim);
   Vector vecB(args_->dim);
-  real normA = vecA.norm();
-  real normB = vecB.norm();
-  std::cout << normA;
-  std::cout << normB;
   getWordVector(vecA, a);
   getWordVector(vecB, b);
+  real normA = vecA.norm();
+  real normB = vecB.norm();
   score = vecA.dot(vecB)/(normA*normB);
-
 }
 
 void FastText::analogies(const std::string &A,
