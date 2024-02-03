@@ -8,7 +8,7 @@
  */
 
 #include "fasttext.h"
-
+#include <cmath>
 #include <iostream>
 #include <sstream>
 #include <iomanip>
@@ -566,9 +566,13 @@ void FastText::calculateVecSimilarity(
   Vector vecB(args_->dim);
   getWordVector(vecA, a);
   getWordVector(vecB, b);
-  real normA = vecA.norm();
-  real normB = vecB.norm();
-  score = vecA.dot(vecB)/(normA*normB);
+  real denorm = vecA.norm() * vecB.norm();
+  if (std::fabs(denorm) < 1e-9) {
+    // prevent overflows
+    denorm = 1;
+  }
+  // dot sum and divided by norms of A*B, returning the cosine sim
+  score = vecA.dot(vecB)/(denorm);
 }
 
 void FastText::analogies(const std::string &A,
