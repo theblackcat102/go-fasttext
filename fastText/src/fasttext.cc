@@ -557,12 +557,18 @@ void FastText::findNN(
   }
 }
 
-void FastText::calculateSimilarity(
+void FastText::calculateVecSimilarity(
   std::string a,
   std::string b,
   float &score
 ) {
-    Vector vec(args_->dim);
+  Vector vecA(args_->dim);
+  Vector vecB(args_->dim);
+  real normA = vecA.norm();
+  real normB = vecB.norm();
+  getWordVector(vecA, a);
+  getWordVector(vecB, b);
+  score = vecA.dot(vecB)/(normA*normB);
 
 }
 

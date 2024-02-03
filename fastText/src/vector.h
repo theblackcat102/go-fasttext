@@ -49,6 +49,7 @@ class Vector {
     void zero();
     void mul(real);
     real norm() const;
+    real dot(const Vector &);
     void addVector(const Vector& source);
     void addVector(const Vector&, real);
     void addRow(const Matrix&, int64_t);

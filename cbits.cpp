@@ -134,3 +134,10 @@ char *Wordvec(FastTextHandle handle, char *query) {
 
   return strdup(res.dump().c_str());
 }
+
+float VecSimilarity(FastTextHandle handle, char *a, char *b) {
+  auto model = bit_cast<fasttext::FastText *>(handle);
+  float score = 0;
+  model->calculateVecSimilarity(a, b, score);
+  return score;
+}

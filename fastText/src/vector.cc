@@ -33,6 +33,16 @@ real Vector::norm() const {
   return std::sqrt(sum);
 }
 
+
+real Vector::dot(const Vector &query) {
+  real sum = 0;
+  assert(size() == query.size());
+  for (int64_t i = 0; i < size(); i++) {
+    sum += data_[i] * query[i];
+  }
+  return sum;
+}
+
 void Vector::mul(real a) {
   for (int64_t i = 0; i < size(); i++) {
     data_[i] *= a;

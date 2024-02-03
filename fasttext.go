@@ -8,7 +8,6 @@ package fasttext
 import "C"
 
 import (
-	"math"
 	"encoding/json"
 	"unsafe"
 )
@@ -130,46 +129,12 @@ func (handle *Model) Wordvec(query string) (Vectors, error) {
 	return vectors, nil
 }
 
-// DotProduct calculates the dot product of two Vectors.
-func DotProduct(v1, v2 Vectors) (float32, error) {
-	if len(v1) != len(v2) {
-		return 0, fmt.Errorf("vectors must be of the same length")
-	}
-
-	var product float32
-	for i, v := range v1 {
-		product += v.Element * v2[i].Element
-	}
-	return product, nil
-}
-
-func Norm(v Vectors) float32 {
-	var sum float32
-	for _, vector := range v {
-		sum += vector.Element * vector.Element
-	}
-	return float32(math.Sqrt(float64(sum)))
-}
-
 // CosineSimilarity calculates the cosine similarity between two Vectors.
-func (handle *Model) CosineSimilarity(a string, b string) (float32, error) {
-	vA, err = Model.Wordvec(a)
-	if err != nil {
-		return 0, err
-	}
-	vB, err = Model.Wordvec(b)
-	if err != nil {
-		return 0, err
-	}
-	dotProduct, err := DotProduct(vA, vB)
-	if err != nil {
-		return 0, err
-	}
-	normV1 := Norm(v1)
-	normV2 := Norm(v2)
-	var sum float32 = 0
-	for i := range a {
-		sum += a[i].Element * b[i].Element
-	}
-	return sum, nil
+func (handle *Model) CosineSimilarity(a string, b string) float32 {
+	cA := C.CString(a)
+	defer C.free(unsafe.Pointer(cA))
+	cB := C.CString(b)
+	defer C.free(unsafe.Pointer(cB))
+	sum := C.VecSimilarity(handle.handle, cA, cB)
+	return float32(sum)
 }

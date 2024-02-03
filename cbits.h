@@ -14,6 +14,7 @@ char *Predict(FastTextHandle handle, char *query);
 char *Analogy(FastTextHandle handle, char *, char *, char *, int32_t);
 char *Wordvec(FastTextHandle handle, char *query);
 char *Neighbor(FastTextHandle handle, char *query, int32_t k);
+float VecSimilarity(FastTextHandle, char *, char *);
 
 #ifdef __cplusplus
 }

@@ -103,7 +103,7 @@ class FastText {
       std::vector<std::pair<real, std::string>>&,
       real = 0.0) const;
   void ngramVectors(std::string);
-  void calculateSimilarity(std::string, std::string, float&);
+  void calculateVecSimilarity(std::string, std::string, float&);
   void precomputeWordVectors(Matrix&);
   void findNN(
       const Matrix&,
